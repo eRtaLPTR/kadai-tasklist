@@ -3,22 +3,23 @@ before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   
   def index
-    @tasks = Task.all
+    @tasks = current_user.tasks.page(params[:page])
   end
   
   def show
   end
   
   def new
-    @task = Task.new
+    # @task = Task.new
+    @task = current_user.tasks.build
   end
   
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
 
     if @task.save
       flash[:success] = 'taskが正常に投稿されました'
-      redirect_to @task
+      redirect_to root_url
     else
       flash.now[:danger] = 'taskが投稿されませんでした'
       render :new
@@ -31,7 +32,7 @@ before_action :set_task, only: [:show, :edit, :update, :destroy]
   def update
     if @task.update(task_params)
       flash[:success] = 'Taskは正常に更新されました'
-      redirect_to @task
+      redirect_to root_url
     else
       flash.now[:danger] = 'Taskは更新されませんでした'
       render :edit
@@ -43,7 +44,7 @@ before_action :set_task, only: [:show, :edit, :update, :destroy]
     @task.destroy
     
     flash[:success] = 'Taskは正常に削除されました'
-    redirect_to tasks_url
+    redirect_to root_url
   end
   
   private
