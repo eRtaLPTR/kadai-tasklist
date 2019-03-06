@@ -57,3 +57,7 @@ group :production do
 end
 
 gem 'kaminari'
+
+group :production do
+  gem 'pg', '0.21.0'
+end
